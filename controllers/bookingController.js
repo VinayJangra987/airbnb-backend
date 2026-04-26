@@ -1,6 +1,7 @@
 const Booking = require("../models/Booking");
 
 
+
 // CREATE BOOKING
 const createBooking = async (req, res) => {
   try {
@@ -74,9 +75,24 @@ const getMyBookings = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getListingBookings = async (req, res) => {
+  try {
+    const { listingId } = req.params;
+
+    const bookings = await Booking.find({
+      listing: listingId,
+      status: "active",
+    });
+
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 module.exports = {
   createBooking,
   cancelBooking,
   getMyBookings,
+  getListingBookings,
 };
